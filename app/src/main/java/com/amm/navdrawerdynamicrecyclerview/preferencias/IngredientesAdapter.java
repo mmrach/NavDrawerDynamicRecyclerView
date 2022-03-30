@@ -47,10 +47,9 @@ public class IngredientesAdapter extends ListAdapter<Ingrediente, IngredientesAd
 
     @Override
     public void onBindViewHolder(@NonNull IngredienteViewHolder holder, int position) {
-        String ingrediente;
-
-        if ((ingrediente = getCurrentList().get(position).getIngredienteName()) != null){
-            holder.bind(ingrediente);
+        Ingrediente ingrediente = getCurrentList().get(position);
+        if (ingrediente != null){
+            holder.bind(ingrediente.toString());
         }
     }
 

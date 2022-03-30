@@ -5,7 +5,7 @@
     android:id="@+id/miWellcome"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="navdrawerdynamicrecyclerview.wellcome.WellcomeFragment">
+    tools:context="com.amm.navdrawerdynamicrecyclerview.wellcome.WellcomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView

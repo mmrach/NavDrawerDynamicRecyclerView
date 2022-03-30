@@ -30,6 +30,7 @@ public class SharedViewModel extends ViewModel {
             _ingredienteList = new MutableLiveData<>();
         }
         _ingredienteList.setValue(ingredienteList);
+        _ingredienteList.getValue().sort(Ingrediente::compareTo);
     }
 
     public LiveData<List<Ingrediente>> getIngredienteList() {
@@ -51,6 +52,7 @@ public class SharedViewModel extends ViewModel {
         if (_ingredienteList.getValue() != null) {
             List<Ingrediente> ingredienteList = new ArrayList<>(_ingredienteList.getValue());
             ingredienteList.add(ingrediente);
+            ingredienteList.sort(Ingrediente::compareTo);
             _ingredienteList.setValue(ingredienteList);
         }
     }
@@ -62,6 +64,22 @@ public class SharedViewModel extends ViewModel {
             ingredienteList.add(position, newIngrediente);
             _ingredienteList.setValue(ingredienteList);
         }
+    }
+
+    public boolean findIngredienteByName(String ingredienteName) {
+        boolean retVal=false;
+        if (_ingredienteList.getValue() != null) {
+            for (Ingrediente ingrediente : _ingredienteList.getValue()) {
+                if (ingrediente.toString().equals(ingredienteName)){
+                    retVal = true;
+                    break;
+                }
+            }
+        }
+        else {
+            retVal=false;
+        }
+        return retVal;
     }
     //-------------------------------
 

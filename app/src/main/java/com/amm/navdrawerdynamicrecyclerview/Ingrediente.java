@@ -3,30 +3,39 @@ package com.amm.navdrawerdynamicrecyclerview;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 
-public class Ingrediente {
-    private String ingredienteName;
+public class Ingrediente implements Comparable<Ingrediente> {
+    private String strIngrediente;
 
-    public Ingrediente(String ingredienteName) {
-        this.ingredienteName = ingredienteName;
+    public Ingrediente(String strIngrediente) {
+        this.strIngrediente = strIngrediente;
     }
 
-    public String getIngredienteName() {
-        return ingredienteName;
+    @NonNull
+    @Override
+    public String toString() {
+
+        return strIngrediente;
     }
 
-    public void setIngredienteName(String ingredienteName) {
-        this.ingredienteName = ingredienteName;
+    @Override
+    public int compareTo(Ingrediente ingrediente) {
+        return strIngrediente.compareTo(ingrediente.toString());
+    }
+
+    public void setName(String strIngrediente) {
+        this.strIngrediente = strIngrediente;
     }
 
     public static DiffUtil.ItemCallback<Ingrediente> ingedienteDiffCallback = new DiffUtil.ItemCallback<Ingrediente>() {
         @Override
         public boolean areItemsTheSame(@NonNull Ingrediente oldItem, @NonNull Ingrediente newItem) {
-            return oldItem.getIngredienteName().equals(newItem.getIngredienteName());
+            return oldItem.toString().equals(newItem.toString());
         }
 
         @Override
         public boolean areContentsTheSame(@NonNull Ingrediente oldItem, @NonNull Ingrediente newItem) {
-            return oldItem.getIngredienteName().equals(newItem.getIngredienteName());
+            return oldItem.toString().equals(newItem.toString());
         }
     };
+
 }

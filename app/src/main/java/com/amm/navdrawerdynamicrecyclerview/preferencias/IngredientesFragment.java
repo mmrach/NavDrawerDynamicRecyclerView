@@ -7,13 +7,17 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.amm.navdrawerdynamicrecyclerview.Ingrediente;
 import com.amm.navdrawerdynamicrecyclerview.main.SharedViewModel;
@@ -32,6 +36,8 @@ public class IngredientesFragment extends Fragment {
     private RecyclerView rvIngredienes;
     private IngredientesAdapter ingredientesAdapter;
     private ImageButton ibRefresh;
+    private Button btnAnadir;
+    private EditText etNuevoIngrediente;
 
     // Referencia a la default ViewModelFactory de la App, a usar cuando el ViewModel no recibe parámetros y se usa su constructor por defecto
     private ViewModelProvider.AndroidViewModelFactory theAppFactory;
@@ -80,6 +86,8 @@ public class IngredientesFragment extends Fragment {
         // Sin Factory, cogiendo la devault ViewMOdelFactory del objeto Application.
         theAppFactory = ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity().getApplication());
         sharedViewModel = new ViewModelProvider( requireActivity(), (ViewModelProvider.Factory) theAppFactory).get(SharedViewModel.class);
+
+
     }
 
     @Override
@@ -92,6 +100,28 @@ public class IngredientesFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        etNuevoIngrediente = (EditText) getView().findViewById(R.id.etNuevoIngrediente);
+
+        btnAnadir = (Button) getView().findViewById(R.id.btnAnadir);
+        btnAnadir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String strIngrediente = etNuevoIngrediente.getText().toString();
+                if (strIngrediente.length()>0) {
+                    if (!sharedViewModel.findIngredienteByName(strIngrediente)) {
+                        sharedViewModel.addIngrediente(new Ingrediente(strIngrediente));
+                        etNuevoIngrediente.setText("");
+                    }
+                    else{
+                        Toast.makeText(getContext(),"El ingrediente ya existe",Toast.LENGTH_LONG).show();
+                    }
+                }
+                else {
+                    Toast.makeText(getContext(),"Debe escribir un nuevo ingrediente",Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
         ibRefresh = (ImageButton) getView().findViewById(R.id.ibRefresh);
         ibRefresh.setOnClickListener(new View.OnClickListener() {

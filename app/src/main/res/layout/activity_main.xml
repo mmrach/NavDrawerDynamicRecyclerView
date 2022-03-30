@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/drawer_layout"
-    tools:context="navdrawerdynamicrecyclerview.main.MainActivity">
+    tools:context="com.amm.navdrawerdynamicrecyclerview.main.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -66,6 +66,7 @@
     <fragment
         android:id="@+id/ingredientesFragment"
         android:name="com.amm.navdrawerdynamicrecyclerview.preferencias.IngredientesFragment"
-        android:label="fragment_ingredientes"
-        tools:layout="@layout/fragment_ingredientes" />
+        android:label="Ingredientes"
+        tools:layout="@layout/fragment_ingredientes">
+    </fragment>
 </navigation>
