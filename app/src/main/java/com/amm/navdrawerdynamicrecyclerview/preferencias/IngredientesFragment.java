@@ -20,6 +20,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.amm.navdrawerdynamicrecyclerview.Ingrediente;
+import com.amm.navdrawerdynamicrecyclerview.main.IngredientesViewModel;
 import com.amm.navdrawerdynamicrecyclerview.main.SharedViewModel;
 
 import java.util.List;
@@ -42,7 +43,7 @@ public class IngredientesFragment extends Fragment {
     // Referencia a la default ViewModelFactory de la App, a usar cuando el ViewModel no recibe parámetros y se usa su constructor por defecto
     private ViewModelProvider.AndroidViewModelFactory theAppFactory;
     // Declaramos una referencia para el ViewModel de Preferencias.
-    private SharedViewModel sharedViewModel;
+    private IngredientesViewModel ingredientesViewModel;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -85,9 +86,7 @@ public class IngredientesFragment extends Fragment {
 
         // Sin Factory, cogiendo la devault ViewMOdelFactory del objeto Application.
         theAppFactory = ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity().getApplication());
-        sharedViewModel = new ViewModelProvider( requireActivity(), (ViewModelProvider.Factory) theAppFactory).get(SharedViewModel.class);
-
-
+        ingredientesViewModel = new ViewModelProvider( requireActivity(), (ViewModelProvider.Factory) theAppFactory).get(IngredientesViewModel.class);
     }
 
     @Override
@@ -109,8 +108,8 @@ public class IngredientesFragment extends Fragment {
             public void onClick(View view) {
                 String strIngrediente = etNuevoIngrediente.getText().toString();
                 if (strIngrediente.length()>0) {
-                    if (!sharedViewModel.findIngredienteByName(strIngrediente)) {
-                        sharedViewModel.addIngrediente(new Ingrediente(strIngrediente));
+                    if (!ingredientesViewModel.findIngredienteByName(strIngrediente)) {
+                        ingredientesViewModel.addIngrediente(new Ingrediente(strIngrediente));
                         etNuevoIngrediente.setText("");
                     }
                     else{
@@ -128,7 +127,7 @@ public class IngredientesFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 String[] theArray = getResources().getStringArray(R.array.ingredientes_array);
-                sharedViewModel.initIngredienteList(theArray);
+                ingredientesViewModel.initList(theArray);
             }
         });
 
@@ -136,10 +135,10 @@ public class IngredientesFragment extends Fragment {
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvIngredienes.setLayoutManager(layoutManager);
-        ingredientesAdapter = new IngredientesAdapter(Ingrediente.ingedienteDiffCallback,getContext());
+        ingredientesAdapter = new IngredientesAdapter(Ingrediente.ingredienteDiffCallback,getContext());
         rvIngredienes.setAdapter(ingredientesAdapter);
 
-        sharedViewModel.getIngredienteList().observe(this, new Observer<List<Ingrediente>>() {
+        ingredientesViewModel.getIngredienteList().observe(this, new Observer<List<Ingrediente>>() {
             @Override
             public void onChanged(List<Ingrediente> listaIngredientes) {
                 ingredientesAdapter.submitList(listaIngredientes);

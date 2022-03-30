@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewModelProvider.AndroidViewModelFactory theAppFactory;
     // Declaramos una referencia para el ViewModel de SharedViewMoel.
     private SharedViewModel sharedViewModel;
+    private IngredientesViewModel ingredientesViewModel;
 
 
     @Override
@@ -53,9 +54,13 @@ public class MainActivity extends AppCompatActivity {
     private void setupSharedViewModel(){
         // Sin Factory, cogiendo la Factory del objeto App.
         theAppFactory = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication());
+        //Creamos los ViewModels
         sharedViewModel = new ViewModelProvider(this, (ViewModelProvider.Factory) theAppFactory).get(SharedViewModel.class);
+        ingredientesViewModel = new ViewModelProvider(this, (ViewModelProvider.Factory) theAppFactory).get(IngredientesViewModel.class);
+
+        //Cargamos el los ingredientes en el ViewModel
         String[] theArray = getResources().getStringArray(R.array.ingredientes_array);
-        sharedViewModel.initIngredienteList(theArray);
+        ingredientesViewModel.initList(theArray);
     }
 
 

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.amm.navdrawerdynamicrecyclerview.Ingrediente;
+import com.amm.navdrawerdynamicrecyclerview.main.IngredientesViewModel;
 import com.amm.navdrawerdynamicrecyclerview.main.SharedViewModel;
 
 import java.util.List;
@@ -27,13 +29,13 @@ public class IngredientesAdapter extends ListAdapter<Ingrediente, IngredientesAd
     // Referencia a la default ViewModelFactory de la App, a usar cuando el ViewModel no recibe parámetros y se usa su constructor por defecto
     private ViewModelProvider.AndroidViewModelFactory theAppFactory;
     // Declaramos una referencia para el ViewModel de SharedViewModel.
-    private SharedViewModel sharedViewModel;
+    private IngredientesViewModel ingredientesViewModel;
 
     protected IngredientesAdapter(@NonNull DiffUtil.ItemCallback<Ingrediente> diffCallback, Context context) {
         super(diffCallback);
         // Sin Factory, cogiendo la Factory del objeto Application
         theAppFactory = ViewModelProvider.AndroidViewModelFactory.getInstance((Application) context.getApplicationContext());
-        sharedViewModel = new ViewModelProvider((ViewModelStoreOwner) context, (ViewModelProvider.Factory) theAppFactory).get(SharedViewModel.class);
+        ingredientesViewModel = new ViewModelProvider((ViewModelStoreOwner) context, (ViewModelProvider.Factory) theAppFactory).get(IngredientesViewModel.class);
     }
 
     @NonNull
@@ -51,6 +53,12 @@ public class IngredientesAdapter extends ListAdapter<Ingrediente, IngredientesAd
         if (ingrediente != null){
             holder.bind(ingrediente.toString());
         }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(), "Seleccionado: " + ingrediente.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public class IngredienteViewHolder extends RecyclerView.ViewHolder {
@@ -64,7 +72,7 @@ public class IngredientesAdapter extends ListAdapter<Ingrediente, IngredientesAd
             ibDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    sharedViewModel.deleteIngrediente(getLayoutPosition());
+                    ingredientesViewModel.deleteIngrediente(getLayoutPosition());
                 }
             });
         }

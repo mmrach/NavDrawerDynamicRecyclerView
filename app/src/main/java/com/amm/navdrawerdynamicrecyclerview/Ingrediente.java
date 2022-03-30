@@ -26,7 +26,7 @@ public class Ingrediente implements Comparable<Ingrediente> {
         this.strIngrediente = strIngrediente;
     }
 
-    public static DiffUtil.ItemCallback<Ingrediente> ingedienteDiffCallback = new DiffUtil.ItemCallback<Ingrediente>() {
+    public static DiffUtil.ItemCallback<Ingrediente> ingredienteDiffCallback = new DiffUtil.ItemCallback<Ingrediente>() {
         @Override
         public boolean areItemsTheSame(@NonNull Ingrediente oldItem, @NonNull Ingrediente newItem) {
             return oldItem.toString().equals(newItem.toString());
