@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amm.navdrawerdynamicrecyclerview.Ingrediente;
@@ -39,6 +40,7 @@ public class IngredientesFragment extends Fragment {
     private ImageButton ibRefresh;
     private Button btnAnadir;
     private EditText etNuevoIngrediente;
+    private TextView tvNumIngredientes;
 
     // Referencia a la default ViewModelFactory de la App, a usar cuando el ViewModel no recibe parámetros y se usa su constructor por defecto
     private ViewModelProvider.AndroidViewModelFactory theAppFactory;
@@ -104,6 +106,14 @@ public class IngredientesFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        tvNumIngredientes = (TextView) getView().findViewById(R.id.tvNumIngredientes);
+        ingredientesViewModel.getList().observe(this, new Observer<List<Ingrediente>>() {
+            @Override
+            public void onChanged(List<Ingrediente> ingredientes) {
+                tvNumIngredientes.setText(String.valueOf(ingredientes.size()));
+            }
+        });
 
         etNuevoIngrediente = (EditText) getView().findViewById(R.id.etNuevoIngrediente);
 
