@@ -26,16 +26,16 @@ import navdrawerdynamicrecyclerview.R;
 
 public class IngredientesAdapter extends ListAdapter<Ingrediente, IngredientesAdapter.IngredienteViewHolder> {
 
-    // Referencia a la default ViewModelFactory de la App, a usar cuando el ViewModel no recibe parámetros y se usa su constructor por defecto
-    private ViewModelProvider.AndroidViewModelFactory theAppFactory;
-    // Declaramos una referencia para el ViewModel de SharedViewModel.
+    //Declaramos una referencia al ingredientesViewModel
     private IngredientesViewModel ingredientesViewModel;
 
-    protected IngredientesAdapter(@NonNull DiffUtil.ItemCallback<Ingrediente> diffCallback, Context context) {
+    protected IngredientesAdapter(@NonNull DiffUtil.ItemCallback<Ingrediente> diffCallback, ViewModelStoreOwner owner) {
         super(diffCallback);
-        // Sin Factory, cogiendo la Factory del objeto Application
-        theAppFactory = ViewModelProvider.AndroidViewModelFactory.getInstance((Application) context.getApplicationContext());
-        ingredientesViewModel = new ViewModelProvider((ViewModelStoreOwner) context, (ViewModelProvider.Factory) theAppFactory).get(IngredientesViewModel.class);
+        //Instanciamos el ingredientesViewModel
+        //  El segundo parametro que recibimos debe ser el objeto en donde se creo por primera vez el ViewModel
+        //     En este ejemplo es el  IngredientesFragment porque en el se instancia por primara vez
+        //  Un (ViewModelStoreOwner) es un objeto con ciclo de vida (una Activity o un Fragment).
+        ingredientesViewModel = new ViewModelProvider(owner).get(IngredientesViewModel.class);
     }
 
     @NonNull

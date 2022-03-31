@@ -13,9 +13,6 @@ public class IngredientesViewModel extends ViewModel {
 
     private MutableLiveData<List<Ingrediente>> _theList;
 
-    public IngredientesViewModel() {
-    }
-
     public void initList(String[] arrayIngredientes) {
         List<Ingrediente> ingredienteList = new ArrayList<Ingrediente>();
         for (int i = 0; i < arrayIngredientes.length; i++) {

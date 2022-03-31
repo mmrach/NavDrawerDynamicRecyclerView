@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,9 +43,7 @@ public class IngredientesFragment extends Fragment {
     private EditText etNuevoIngrediente;
     private TextView tvNumIngredientes;
 
-    // Referencia a la default ViewModelFactory de la App, a usar cuando el ViewModel no recibe parámetros y se usa su constructor por defecto
-    private ViewModelProvider.AndroidViewModelFactory theAppFactory;
-    // Declaramos una referencia para el ViewModel de Preferencias.
+    //Una referencia a ingredientesViewModel
     private IngredientesViewModel ingredientesViewModel;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -86,9 +85,14 @@ public class IngredientesFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        // Sin Factory, cogiendo la devault ViewMOdelFactory del objeto Application.
-        theAppFactory = ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity().getApplication());
-        ingredientesViewModel = new ViewModelProvider( requireActivity(), (ViewModelProvider.Factory) theAppFactory).get(IngredientesViewModel.class);
+
+        //El owner es un ViewModelStoreOwner que es un objeto con ciclo de vida es decir una Activity o un Fragment
+        //en este caso estamos en un Fragment, por eso pasamos this a ViewModelProvider
+        ingredientesViewModel = new ViewModelProvider(this).get(IngredientesViewModel.class);
+        //Aquí instanciamos por primera vez el ingredientesViewModel, es decir, lo ubicamos en el Fragment
+        //Cualquier otra referencia debe acceder a esta instacia de ingredientesViewModel
+        //para ello tendrá que pasar a ViewModelProvider una referencia al Fragment.
+
         //Si la lista de ingredientes no ha sido cargada todavía en el ViewModel (por una ejecución anterior de este fragment, por ejemplo)
         if (ingredientesViewModel.getList().getValue() == null) {
             String[] theArray = getResources().getStringArray(R.array.ingredientes_array);
@@ -150,7 +154,9 @@ public class IngredientesFragment extends Fragment {
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvIngredienes.setLayoutManager(layoutManager);
-        ingredientesAdapter = new IngredientesAdapter(Ingrediente.ingredienteDiffCallback,getContext());
+        //En el IngredientesAdapter queremos usar también el ingredientesViewModel por eso le pasamos
+        //una referencia a this Fragment, para que pueda ponerla en el ViewModelProvider al instanciarlo
+        ingredientesAdapter = new IngredientesAdapter(Ingrediente.ingredienteDiffCallback,this);
         rvIngredienes.setAdapter(ingredientesAdapter);
 
         ingredientesViewModel.getList().observe(this, new Observer<List<Ingrediente>>() {
