@@ -87,6 +87,11 @@ public class IngredientesFragment extends Fragment {
         // Sin Factory, cogiendo la devault ViewMOdelFactory del objeto Application.
         theAppFactory = ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity().getApplication());
         ingredientesViewModel = new ViewModelProvider( requireActivity(), (ViewModelProvider.Factory) theAppFactory).get(IngredientesViewModel.class);
+        //Si la lista de ingredientes no ha sido cargada todavía en el ViewModel (por una ejecución anterior de este fragment, por ejemplo)
+        if (ingredientesViewModel.getList().getValue() == null) {
+            String[] theArray = getResources().getStringArray(R.array.ingredientes_array);
+            ingredientesViewModel.initList(theArray);
+        }
     }
 
     @Override
@@ -138,7 +143,7 @@ public class IngredientesFragment extends Fragment {
         ingredientesAdapter = new IngredientesAdapter(Ingrediente.ingredienteDiffCallback,getContext());
         rvIngredienes.setAdapter(ingredientesAdapter);
 
-        ingredientesViewModel.getIngredienteList().observe(this, new Observer<List<Ingrediente>>() {
+        ingredientesViewModel.getList().observe(this, new Observer<List<Ingrediente>>() {
             @Override
             public void onChanged(List<Ingrediente> listaIngredientes) {
                 ingredientesAdapter.submitList(listaIngredientes);

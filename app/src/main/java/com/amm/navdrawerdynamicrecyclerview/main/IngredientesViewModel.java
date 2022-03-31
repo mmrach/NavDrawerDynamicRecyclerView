@@ -28,7 +28,7 @@ public class IngredientesViewModel extends ViewModel {
         _theList.getValue().sort(Ingrediente::compareTo);
     }
 
-    public LiveData<List<Ingrediente>> getIngredienteList() {
+    public LiveData<List<Ingrediente>> getList() {
         if (_theList == null) {
             _theList = new MutableLiveData<>();
         }
